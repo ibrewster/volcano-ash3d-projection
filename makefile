@@ -86,6 +86,8 @@ libprojection.a: projection.f90 projection.o makefile
 projection.o: projection.f90 makefile
 	$(FC) $(FFLAGS) $(EXFLAGS) -c projection.f90
 
+all: libprojection.a
+
 clean:
 	rm -f projection.o
 	rm -f *.mod

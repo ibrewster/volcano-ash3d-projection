@@ -32,7 +32,7 @@
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-      MODULE projection
+      module projection
 
       character(len=20), dimension(8) :: params
       integer      :: PJ_ilatlonflag
@@ -67,23 +67,23 @@
 
       read(linebuffer,*)PJ_ilatlonflag
 
-      IF(PJ_ilatlonflag.eq.1)THEN
+      if(PJ_ilatlonflag.eq.1)then
         ! coordinates are in lon/lat
         return
-      ELSEIF(PJ_ilatlonflag.eq.0)THEN
+      elseif(PJ_ilatlonflag.eq.0)then
         ! coordinates are projected, read the projection flag
         read(linebuffer,*)PJ_ilatlonflag,PJ_iprojflag
         if(PJ_iprojflag.ne.1.and.PJ_iprojflag.ne.2.and. &
            PJ_iprojflag.ne.3.and.PJ_iprojflag.ne.4.and. &
            PJ_iprojflag.ne.5) then
-          write(6,*)"Unrecognized projection flag"
+          write(0,*)"Unrecognized projection flag"
           stop 1
         endif
-      ELSE
+      else
         ! PJ_ilatlonflag is not 0 or 1, stopping program
-        write(6,*)"Unrecognized latlonflag"
+        write(0,*)"Unrecognized latlonflag"
         stop 1
-      ENDIF
+      endif
 
 
       select case (PJ_iprojflag)
@@ -92,18 +92,18 @@
         ! Polar stereographic
         read(linebuffer,*)PJ_ilatlonflag,PJ_iprojflag,PJ_lam0,PJ_phi0,PJ_k0,PJ_radius_earth
         if(abs(PJ_lam0).gt.360.0)then
-          write(6,*)"PJ ERROR:  PJ_lam0 should be in in range -360 - 360"
-          write(6,*)"   lam0 = ",PJ_lam0
+          write(0,*)"PJ ERROR:  PJ_lam0 should be in in range -360 - 360"
+          write(0,*)"   lam0 = ",PJ_lam0
           stop 1
         endif
         if(abs(PJ_phi0).gt.90.0)then
-          write(6,*)"PJ ERROR:  PJ_phi0 should be in in range -90 - 30"
-          write(6,*)"   PJ_phi0 = ",PJ_phi0
+          write(0,*)"PJ ERROR:  PJ_phi0 should be in in range -90 - 30"
+          write(0,*)"   PJ_phi0 = ",PJ_phi0
           stop 1
         endif
         if(PJ_k0.le.0.0)then
-          write(6,*)"PJ ERROR:  PJ_k0 should > 0"
-          write(6,*)"   PJ_k0 = ",PJ_k0
+          write(0,*)"PJ ERROR:  PJ_k0 should > 0"
+          write(0,*)"   PJ_k0 = ",PJ_k0
           stop 1
         endif
         if(PJ_radius_earth.le.5000.0.or.PJ_radius_earth.ge.7000.0)then
@@ -131,17 +131,17 @@
 
       case(2)
         ! Albers Equal Area
-        write(6,*)"WARNING: Albers not yet verified"
+        write(0,*)"WARNING: Albers not yet verified"
         read(linebuffer,*)PJ_ilatlonflag,PJ_iprojflag,PJ_lam0,PJ_phi0,PJ_phi1,PJ_phi2
         if(abs(PJ_lam0).gt.360.0)then
-          write(6,*)"PJ ERROR:  PJ_lam0 should be in in range -360 - 360"
-          write(6,*)"   PJ_lam0 = ",PJ_lam0
+          write(0,*)"PJ ERROR:  PJ_lam0 should be in in range -360 - 360"
+          write(0,*)"   PJ_lam0 = ",PJ_lam0
           stop 1
         endif
         if(abs(PJ_phi0).gt.90.0.or.abs(PJ_phi1).gt.90.0.or.abs(PJ_phi2).gt.90.0)then
-          write(6,*) &
+          write(0,*) &
             "PJ ERROR:  PJ_phi0,1,2 should each be in in range -90 - 90"
-          write(6,*)" PJ_phi0,1,2 = ",PJ_phi0,PJ_phi1,PJ_phi2
+          write(0,*)" PJ_phi0,1,2 = ",PJ_phi0,PJ_phi1,PJ_phi2
           stop 1
         endif
         ! Preparing parameter list for projection call
@@ -164,16 +164,16 @@
 
       case(3)
         ! UTM
-        write(6,*)"WARNING: UTM not yet verified"
+        write(0,*)"WARNING: UTM not yet verified"
         read(linebuffer,*)PJ_ilatlonflag,PJ_iprojflag,izone,inorth
         if(izone.le.0.or.izone.gt.60)then
-          write(6,*)"PJ ERROR:  izone should be in in range 1 - 60"
-          write(6,*)"   izone = ",izone
+          write(0,*)"PJ ERROR:  izone should be in in range 1 - 60"
+          write(0,*)"   izone = ",izone
           stop 1
         endif
         if(inorth.ne.0.and.inorth.ne.1)then
-          write(6,*)"PJ ERROR:  inorth should be either 0 or 1"
-          write(6,*)"   inorth = ",inorth
+          write(0,*)"PJ ERROR:  inorth should be either 0 or 1"
+          write(0,*)"   inorth = ",inorth
           stop 1
         endif
         ! Preparing parameter list for projection call
@@ -205,14 +205,14 @@
         read(linebuffer,*)PJ_ilatlonflag,PJ_iprojflag,PJ_lam0, &
                           PJ_phi0,PJ_phi1,PJ_phi2,PJ_radius_earth
         if(abs(PJ_lam0).gt.360.0)then
-          write(6,*)"PJ ERROR:  PJ_lam0 should be in in range -360 - 360"
-          write(6,*)"   PJ_lam0 = ",PJ_lam0
+          write(0,*)"PJ ERROR:  PJ_lam0 should be in in range -360 - 360"
+          write(0,*)"   PJ_lam0 = ",PJ_lam0
           stop 1
         endif
         if(abs(PJ_phi0).gt.90.0.or.abs(PJ_phi1).gt.90.0.or.abs(PJ_phi2).gt.90.0)then
-          write(6,*) &
+          write(0,*) &
             "PJ ERROR:  PJ_phi0,1,2 should each be in in range -90 - 90"
-          write(6,*)"   PJ_phi0,1,2 = ",PJ_phi0,PJ_phi1,PJ_phi2
+          write(0,*)"   PJ_phi0,1,2 = ",PJ_phi0,PJ_phi1,PJ_phi2
           stop 1
         endif
         if(PJ_radius_earth.le.5000.0.or.PJ_radius_earth.ge.7000.0)then
@@ -243,18 +243,18 @@
         ! Mercator (NAM196)
         read(linebuffer,*)PJ_ilatlonflag,PJ_iprojflag,PJ_lam0,PJ_phi0,PJ_radius_earth
         if(abs(PJ_lam0).gt.360.0)then
-          write(6,*)"PJ ERROR:  PJ_lam0 should be in in range -360 - 360"
-          write(6,*)"   PJ_lam0 = ",PJ_lam0
+          write(0,*)"PJ ERROR:  PJ_lam0 should be in in range -360 - 360"
+          write(0,*)"   PJ_lam0 = ",PJ_lam0
           stop 1
         endif
         if(abs(PJ_phi0).gt.90.0)then
-          write(6,*) &
+          write(0,*) &
             "PJ ERROR:  PJ_phi0 should each be in in range -90 - 90"
-          write(6,*)"   PJ_phi0 = ",PJ_phi0
+          write(0,*)"   PJ_phi0 = ",PJ_phi0
           stop 1
         endif
         if(PJ_radius_earth.le.5000.0.or.PJ_radius_earth.ge.7000.0)then
-          write(6,*)"PJ ERROR:  PJ_radius_earth should around 6300 km, not ",PJ_radius_earth
+          write(0,*)"PJ ERROR:  PJ_radius_earth should around 6300 km, not ",PJ_radius_earth
           stop 1
         endif
 
@@ -312,7 +312,7 @@
       real(kind=8),intent(out) :: y_out     ! 
 
       real(kind=8)  :: lon_in_wrap ! Locally-used lon values that are wrapped
-      real(kind=8)  ::  lon_0_wrap !  to the range 0-360
+      real(kind=8)  :: lon_0_wrap !  to the range 0-360
 
       real(kind=8) :: k_eq
       real(kind=8) :: F
@@ -322,22 +322,32 @@
       real(kind=8) :: zproj
 
       ! First, convert all longitudes to the range 0<lon<=360
-      if (lon_in.le.  0.0_8) lon_in_wrap = lon_in + 360.0_8
-      if (lon_in.gt.360.0_8) lon_in_wrap = lon_in - 360.0_8
-      if (lon_0 .le.  0.0_8)  lon_0_wrap = lon_0  + 360.0_8
-      if (lon_0 .gt.360.0_8)  lon_0_wrap = lon_0  - 360.0_8
-
+      if (lon_in.le.  0.0_8)then
+        lon_in_wrap = lon_in + 360.0_8
+      elseif (lon_in.gt.360.0_8)then
+        lon_in_wrap = lon_in - 360.0_8
+      else
+        lon_in_wrap = lon_in
+      endif
+      if (lon_0 .le.  0.0_8)then
+        lon_0_wrap = lon_0  + 360.0_8
+      elseif (lon_0 .gt.360.0_8)then
+        lon_0_wrap = lon_0  - 360.0_8
+      else
+        lon_0_wrap = lon_0 
+      endif
 
       if (iprojflag.eq.1) then
         ! Polar stereographic
         !    http://mathworld.wolfram.com/StereographicProjection.html
         if (lat_0.lt.90.0_8) then  !	NOTE: this projection only works if lat_0=90.
-          write(6,3)
+          write(0,3)
 3         format('Sorry, lproj only works for polar stereographic',/, &
                          'projection when lat_0=90.',/, &
                          'Program stopped.')
           stop 1
-        end if
+        endif
+
           ! Using Eq. 21-5 and 21.6 of Snyder, 1987
         zproj   = k_0*2.0_8*earth_R
         theta   = (lon_in_wrap-lon_0_wrap)*DEG2RAD
@@ -348,11 +358,11 @@
 
       elseif (iprojflag.eq.2) then
         ! Albers Equal Area
-        write(6,*)"WARNING: Albers not yet verified"
+        write(0,*)"WARNING: Albers not yet verified"
         stop 1
       elseif(iprojflag.eq.3)then
         ! UTM
-        write(6,*)"WARNING: UTM not yet verified"
+        write(0,*)"WARNING: UTM not yet verified"
         stop 1
       elseif(iprojflag.eq.4)then
         ! Lambert conformal conic (NARR, NAM218, NAM221)
@@ -372,7 +382,7 @@
                            cos(PI/4.0_8+DEG2RAD*lat_1/2.0_8)
           !n_exp = 0.42261826174069944 !for 25 degrees
           !n_exp = 0.76604444311897824 !for 50 degrees
-        end if
+        endif
         F     = cos(DEG2RAD*lat_1)*(tan(PI/4.0_8+DEG2RAD*lat_1/2.0_8))**n_exp/n_exp
         rho   = F/(tan(PI/4.0_8+DEG2RAD*lat_in/2.0_8))**n_exp
         rho_0 = F/(tan(PI/4.0_8+DEG2RAD*lat_0/2.0_8))**n_exp
@@ -387,9 +397,9 @@
         tmp_arg = (45.0_8 + 0.5_8*lat_in)*DEG2RAD
         y_out = earth_R*(log(tan(tmp_arg)))*k_eq
       else
-        write(6,*)&
+        write(0,*)&
         'sorry, iprojflag is not 1,2,3,4, or 5.  I dont know what to do'
-      end if
+      endif
 
          return
          end subroutine PJ_proj_for
@@ -424,7 +434,6 @@
       real(kind=8),intent(out) :: lon_out     ! output longitude
       real(kind=8),intent(out) :: lat_out     ! output latitude
 
-      real(kind=8)  :: lon_in_wrap ! Locally-used lon values that are wrapped
       real(kind=8)  ::  lon_0_wrap !  to the range 0-360
 
       real(kind=8) :: k_eq
@@ -434,19 +443,24 @@
       real(kind=8) :: c_fac
 
       ! First, convert input longitude to the range 0<lon<=360
-      if (lon_0 .le.  0.0_8)  lon_0_wrap = lon_0  + 360.0_8
-      if (lon_0 .gt.360.0_8)  lon_0_wrap = lon_0  - 360.0_8
+      if (lon_0 .le.  0.0_8)then
+        lon_0_wrap = lon_0  + 360.0_8
+      elseif (lon_0 .gt.360.0_8)then
+        lon_0_wrap = lon_0  - 360.0_8
+      else
+        lon_0_wrap = lon_0
+      endif
 
       if (iprojflag.eq.1) then
         ! Polar stereographic
         !    http://mathworld.wolfram.com/StereographicProjection.html
         if (lat_0.lt.90.0_8) then  !	NOTE: this projection only works if lat_0=90.
-          write(6,3)
+          write(0,3)
 3         format('Sorry, lproj only works for polar stereographic',/, &
                          'projection when lat_0=90.',/, &
                          'Program stopped.')
           stop 1
-        end if
+        endif
 
         theta   = atan2(x_in,-y_in)
           ! Eq 20-16 of Snyder, 1987
@@ -463,13 +477,13 @@
         if (lon_out.lt.  0.0_8) lon_out=lon_out+360.0_8
         if (lon_out.gt.360.0_8) lon_out=lon_out-360.0_8
 
-      else if (iprojflag.eq.2) then
+      elseif (iprojflag.eq.2) then
         ! Albers Equal Area
-        write(6,*)"WARNING: Albers not yet verified"
+        write(0,*)"WARNING: Albers not yet verified"
         stop 1
       elseif(iprojflag.eq.3)then
         ! UTM
-        write(6,*)"WARNING: UTM not yet verified"
+        write(0,*)"WARNING: UTM not yet verified"
         stop 1
       elseif(iprojflag.eq.4)then
         ! Lambert conformal conic (NARR, NAM218, NAM221)
@@ -503,9 +517,9 @@
         tmp_arg = exp(y_in/(earth_R*k_eq))
         lat_out = 2.0_8*atan(tmp_arg)/DEG2RAD - 90.0_8
       else
-        write(6,*) &
+        write(0,*) &
         'sorry, iprojflag is not 1,2,3,4, or 5.  I dont know what to do'
-      end if
+      endif
 
       ! Lastly, convert output longitude to the range 0<lon<=360
       if (lon_out.le.  0.0_8) lon_out = lon_out + 360.0_8
@@ -517,4 +531,4 @@
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-      END MODULE projection
+      end module projection
