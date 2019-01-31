@@ -3,7 +3,7 @@ projection
 
 projection is a fortran 90 module that contain subroutines that can convert
 between lon,lat and various projections commonly used in numerical weather
-prediction forecast/reannalysis products.
+prediction forecast/reanalysis products.
 These functions were written as a component of the USGS volcanic ash
 transport and dispersion model, Ash3d.  However, since they are useful for
 other programs outside of Ash3d, they are collected into a stand-along file
@@ -38,7 +38,7 @@ projection used, but must begin with an integer.
 
 The first number, read as an integer, is copied to the module public variable
 `PJ_ilatlonflag` and must be either 0 if the coordinate systemp is projected, or
-1 if the coordiantes are in latitude and longitude.  If `PJ_ilatlonflag` is 0,
+1 if the coordinates are in latitude and longitude.  If `PJ_ilatlonflag` is 0,
 then the second integer is read as `PJ_iprojflag`, indicating the projection type.
 Depending on which projection is used, several subsequent floating point numbers
 are read from the string.
