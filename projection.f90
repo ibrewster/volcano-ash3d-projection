@@ -51,7 +51,7 @@
 !     subroutine that prepares parameters for projection call to PJ_proj_for
 !     and PJ_proj_inv.  This takes as input, an 80 char string that the
 !     calling program reads from an input file.  This string is parsed and
-!     the paramters that define the projection are set.
+!     the parameters that define the projection are set.
 !
 !##############################################################################
 
@@ -368,7 +368,7 @@
         ! Lambert conformal conic (NARR, NAM218, NAM221)
 
          !These formulas were taken from the wikipedia article on lcc
-         !also given in the Wolfrom page
+         !also given in the Wolfram page
          !http://mathworld.wolfram.com/LambertConformalConicProjection.html
         if (abs(lat_1-lat_2).gt.1.0e-05_8) then
           n_exp  = log(cos(DEG2RAD*lat_1)/cos(DEG2RAD*lat_2)) / &
@@ -488,7 +488,7 @@
       elseif(iprojflag.eq.4)then
         ! Lambert conformal conic (NARR, NAM218, NAM221)
         !These formulas were taken from the wikipedia article on lcc
-        !also given in the Wolfrom page
+        !also given in the Wolfram page
         !http://mathworld.wolfram.com/LambertConformalConicProjection.html
         if (abs(lat_1-lat_2).gt.1.0e-05_8) then
           n_exp  = log(cos(DEG2RAD*lat_1)/cos(DEG2RAD*lat_2)) / &
