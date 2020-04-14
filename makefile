@@ -78,8 +78,13 @@ endif
 endif
 ###############################################################################
 
+LIB = libprojection.a
 
-lib: libprojection.a
+
+###############################################################################
+# TARGETS
+###############################################################################
+lib: $(LIB)
 
 libprojection.a: projection.f90 projection.o makefile
 	ar rcs libprojection.a projection.o
@@ -97,8 +102,11 @@ install:
 	install -d $(INSTALLDIR)/lib/
 	install -d $(INSTALLDIR)/include/
 	install -m 644 libprojection.a $(INSTALLDIR)/lib/
-	install -m 644 *.mod $(INSTALLDIR)/include/
+	install -m 644 projection.mod $(INSTALLDIR)/include/
 
+uninstall:
+	rm -f $(INSTALLDIR)/lib/$(LIB)
+	rm -f $(INSTALLDIR)/include/projection.mod
 
 
 
