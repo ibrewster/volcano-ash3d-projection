@@ -41,7 +41,6 @@ SYSTEM = gfortran
 RUN = OPT
 #
 INSTALLDIR=/opt/USGS
-#INSTALLDIR=~/gcc
 
 ###############################################################################
 #####  END OF USER SPECIFIED FLAGS  ###########################################
@@ -78,13 +77,18 @@ endif
 endif
 ###############################################################################
 
+LIB = libprojection.a
 
-lib: libprojection.a
+
+###############################################################################
+# TARGETS
+###############################################################################
+lib: $(LIB)
 
 libprojection.a: projection.f90 projection.o makefile
 	ar rcs libprojection.a projection.o
 projection.o: projection.f90 makefile
-	$(FC) $(FFLAGS) $(EXFLAGS) -c projection.f90
+	$(FC) $(FFLAGS) $(EXFLAGS) $(LIBS) -c projection.f90
 
 all: lib
 
@@ -97,15 +101,9 @@ install:
 	install -d $(INSTALLDIR)/lib/
 	install -d $(INSTALLDIR)/include/
 	install -m 644 libprojection.a $(INSTALLDIR)/lib/
-	install -m 644 *.mod $(INSTALLDIR)/include/
+	install -m 644 projection.mod $(INSTALLDIR)/include/
 
-
-
-
-
-
-
-
-
-
+uninstall:
+	rm -f $(INSTALLDIR)/lib/$(LIB)
+	rm -f $(INSTALLDIR)/include/projection.mod
 
